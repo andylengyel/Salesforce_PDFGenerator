@@ -1,0 +1,24 @@
+<!--
+ - Created by Andy Lengyel on 19.05.2017.
+ -->
+
+<apex:page id="PriceProposalEN" standardController="Opportunity" standardStylesheets="False" sideBar="False" renderAs="PDF">
+    <apex:messages styleClass="error"/>
+
+    <apex:form >
+        <!-- Header -->
+        <div id="header">
+            <h1>Demo Price Proposal in English</h1>
+        </div>
+
+        <!-- Content -->
+        <div id="content">
+            Content:
+            <apex:outputField value="{!Opportunity.Account.Name}"/>
+            <apex:outputField value="{!Opportunity.Name}"/>
+            <p class="title">{!Opportunity.Account.Name}</p>
+            <p>{!Opportunity.Account.BillingStreet} {!Opportunity.Account.BillingCity} {!Opportunity.Account.BillingState} {!Opportunity.Account.BillingPostalCode}</p>
+            <p>{!Opportunity.Account.BillingCountry}</p>
+        </div>
+    </apex:form>
+</apex:page>

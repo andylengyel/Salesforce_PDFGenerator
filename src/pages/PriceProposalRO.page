@@ -1,0 +1,23 @@
+<!--
+ - Created by Andy Lengyel on 19.05.2017.
+ -->
+
+<apex:page id="PriceProposalRO" standardController="Opportunity" standardStylesheets="False" sideBar="False" renderAs="PDF">
+    <apex:messages styleClass="error"/>
+
+    <apex:form >
+        <!-- Header -->
+        <div id="header">
+            <h1>Oferta de Pret in Romana</h1>
+        </div>
+
+        <!-- Content -->
+        <div id="content">
+            <p>Client:</p>
+            <h2>{!Opportunity.Account.Name}</h2>
+            <p>Adresa:</p>
+            <p>{!Opportunity.Account.BillingStreet} {!Opportunity.Account.BillingCity} {!Opportunity.Account.BillingState} {!Opportunity.Account.BillingPostalCode}</p>
+            <p>{!Opportunity.Account.BillingCountry}</p>
+        </div>
+    </apex:form>
+</apex:page>

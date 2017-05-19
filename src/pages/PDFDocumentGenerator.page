@@ -1,0 +1,107 @@
+<!--
+ - Created by Andy Lengyel on 07.04.2017.
+ -->
+
+<apex:page id="PDFDocumentGenerator" controller="PDFDocumentGenerator" showHeader="false" standardStylesheets="false" html-style="height: 100%">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <title>PDF Generator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- Import the Design System style sheet -->
+        <apex:slds />
+    </head>
+    <body>
+        <!-- REQUIRED SLDS WRAPPER -->
+        <div class="slds-scope">
+            <apex:form>
+                <!--Header-->
+                <div class="slds-page-header" role="banner">
+                    <div class="slds-grid">
+                        <div class="slds-col slds-has-flexi-truncate">
+                            <div class="slds-media slds-no-space slds-grow">
+                                <div class="slds-media__figure">
+                                    <svg aria-hidden="true" class="slds-icon slds-icon--large slds-icon-standard-user">
+                                        <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/action-sprite/svg/symbols.svg#preview')}"></use>
+                                    </svg>
+                                </div>
+                                <div class="slds-media__body">
+                                    <p class="slds-text-title--caps slds-line-height--reset">{!selectedObjectType} PDF Document Generator</p>
+                                    <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate"
+                                        title="{!selectedObjectType} PDF Document Generator">{!selectedObjectName}</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-no-flex slds-grid slds-align-top">
+                            <div class="slds-button-group" role="group">
+                                <apex:commandButton action="{!savePDFAsAttachement}" value="Save PDF as Attachement" rendered="{!pdfBlob!=null}" styleClass="slds-button slds-button--neutral" />
+                                <apex:commandButton action="{!returnBack}" value="Return" styleClass="slds-button slds-button--neutral" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Content-->
+                <div class="slds-grid" style="height:89vh">
+                    <!--Preview placeholder-->
+                    <div class="slds-size--9-of-12 slds-theme--shade slds-theme--alert-texture">
+                        <apex:iframe title="fileName" src="data:application/pdf;base64,{!pdfContent}" rendered="{!pdfBlob!=null}"></apex:iframe>
+                        <apex:outputPanel styleClass="slds-align--absolute-center slds-grid--vertical-align-center" style="height:89vh" rendered="{!pdfBlob==null}">
+                            <svg aria-hidden="true" class="slds-icon slds-icon--large slds-m-around--medium">
+                                <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#ban')}"></use>
+                            </svg>
+                            <div>
+                                No selected template to preview!
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                    <!--Settings placeholder-->
+                    <div class="slds-size--3-of-12">
+                        <div class="slds-col slds-m-around--small">
+                            <h3 class="slds-section-title--divider slds-m-bottom--large">
+                                Document Settings
+                            </h3>
+                            <div class="slds-notify_container">
+                                <apex:messages styleClass="slds-notify slds-notify--toast slds-notify--alert slds-theme--error slds-theme--alert-texture"/>
+                            </div>
+                            <div class="slds-form--stacked slds-m-bottom--small">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label" for="lstDocumentTypes">Document Type</label>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-select_container">
+                                            <apex:selectList id="lstDocumentTypes" value="{!selectedDocumentType}" size="1" required="true" styleClass="slds-select">
+                                                <apex:actionSupport event="onchange" rerender="lstTemplates,selDocumentType"/>
+                                                <apex:selectOptions value="{!DocumentTypes}"/>
+                                            </apex:selectList>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label" for="lstDocumentTypes">Template Name</label>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-select_container">
+                                            <apex:selectList id="lstTemplates" value="{!selectedTemplate}" size="1" required="true" styleClass="slds-select">
+                                                <apex:selectOptions value="{!Templates}"/>
+                                            </apex:selectList>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-grid--align-end">
+                                <apex:commandLink action="{!generatePDFContent}" styleClass="slds-button slds-button--brand">
+                                    <svg aria-hidden="true" class="slds-button__icon slds-button__icon--left">
+                                        <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/action-sprite/svg/symbols.svg#preview')}"></use>
+                                    </svg>
+                                    Preview
+                                </apex:commandLink>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </apex:form>
+        </div>
+    </body>
+    </html>
+</apex:page>
